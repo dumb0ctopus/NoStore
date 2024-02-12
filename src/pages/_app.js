@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import Layout from "src/components/Layout";
 import "src/styles/globals.css";
 import { CartProvider } from "use-shopping-cart";
@@ -14,6 +15,7 @@ export default function App({ Component, pageProps }) {
     >
       <Layout>
         <Component {...pageProps} />
+        <Toaster />
       </Layout>
     </CartProvider>
   );
