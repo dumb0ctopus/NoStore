@@ -3,9 +3,11 @@ import Image from "next/image";
 import Rating from "./Rating";
 import { formatCurrencyString } from "use-shopping-cart/core";
 import { useShoppingCart } from "use-shopping-cart";
+import { toast } from "react-hot-toast";
 
 function ProductCard({ product, index }) {
   const { addItem } = useShoppingCart();
+
   function onAddToCart(event) {
     event.preventDefault();
     const id = toast.loading("Adding 1 item...");
