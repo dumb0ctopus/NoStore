@@ -2,7 +2,8 @@ import Link from "next/link";
 import { useShoppingCart } from "use-shopping-cart";
 
 function cart() {
-  const { cartCount, formattedTotalPrice, clearCart } = useShoppingCart();
+  const { cartCount, cartDetails, formattedTotalPrice, clearCart } =
+    useShoppingCart();
 
   return (
     <div className="container xl:max-w-screen-xl mx-auto py-12 px-6">
@@ -37,6 +38,9 @@ function cart() {
 
       {cartCount > 0 && (
         <div className="mt-12 space-y-4">
+          {Object.entries(cartDetails).map(([productId, product]) => (
+            <CartProduct key={productId} product={product} />
+          ))}
           <div className="flex flex-col items-end border-t py- mt-8">
             <p className="text-xl">
               Total:{" "}
