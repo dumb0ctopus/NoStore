@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useShoppingCart } from "use-shopping-cart";
+import CartProduct from "src/components/CartProduct";
 
 function cart() {
   const { cartCount, cartDetails, formattedTotalPrice, clearCart } =
