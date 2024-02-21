@@ -1,9 +1,37 @@
 import Link from "next/link";
 import { useShoppingCart } from "use-shopping-cart";
+import CartProduct from "src/components/CartProduct";
+import { useState } from "react";
+import axios from "axios";
 
-function cart() {
-  const { cartCount, cartDetails, formattedTotalPrice, clearCart } =
-    useShoppingCart();
+function Cart() {
+  const {
+    cartCount,
+    cartDetails,
+    formattedTotalPrice,
+    redirectToCheckout,
+    clearCart,
+  } = useShoppingCart();
+  const [isRedirecting, setRedirecting] = useState(false);
+
+  async function onCheckout() {
+    if (cartCount > 0) {
+      try {
+        setRedirecting(true);
+        const { id } = await axios
+          .post("/api/checkout-sessions", cartDetails)
+          .then((res) => res.data);
+        const result = await redirectToCheckout(id);
+        if (result?.error) {
+          console.log("Error in result: ", result);
+        }
+      } catch (error) {
+        console.log("Error :", error);
+      } finally {
+        setRedirecting(false);
+      }
+    }
+  }
 
   return (
     <div className="container xl:max-w-screen-xl mx-auto py-12 px-6">
@@ -46,8 +74,12 @@ function cart() {
               Total:{" "}
               <span className="font-semibold">{formattedTotalPrice}</span>
             </p>
-            <button className="border rounded py-2 px-6 bg-yellow-500 hover:bg-yellow-600 border-yellow-500 hover:border-yellow-600 focus-ring-4 focus:ring-opacity-50 focus:ring-yellow-500 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed  disabled:hover:bg-yellow-500 mt-4 max-w-max">
-              Go to Checkout
+            <button
+              disabled={isRedirecting}
+              onClick={onCheckout}
+              className="border rounded py-2 px-6 bg-yellow-500 hover:bg-yellow-600 border-yellow-500 hover:border-yellow-600 focus-ring-4 focus:ring-opacity-50 focus:ring-yellow-500 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed  disabled:hover:bg-yellow-500 mt-4 max-w-max"
+            >
+              {isRedirecting ? "Redirecting..." : "Go to Checkout"}
             </button>
           </div>
         </div>
@@ -56,4 +88,4 @@ function cart() {
   );
 }
 
-export default cart;
+export default Cart;
