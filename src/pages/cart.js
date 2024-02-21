@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { useShoppingCart } from "use-shopping-cart";
+import CartProduct from "src/components/CartProduct";
+import { useState } from "react";
+import axios from "axios";
 
 function Cart() {
   const {
