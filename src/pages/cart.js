@@ -26,7 +26,7 @@ function Cart() {
           console.log("Error in result: ", result);
         }
       } catch (error) {
-        console.log("Error :", error);
+        console.log("Error: ", error);
       } finally {
         setRedirecting(false);
       }
